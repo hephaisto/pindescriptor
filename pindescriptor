@@ -38,11 +38,15 @@ with open(outfile,"w") as f:
 			used_names.append(pin_name)
 			values=value.split(",")
 
+			if len(values[0]) != 2:
+				sys.exit("invalid register/bit: "+values[0])
 			byte_letter=values[0][0].upper()
 			bit=values[0][1]
 			mode="generic"
 			if len(values)>1:
 				mode=values[1]
+			if len(values)>2:
+				sys.exit("invalid pin description: "+value)
 
 			infodict={"mode":mode, "pin_name":pin_name, "byte_letter":byte_letter, "bit":bit}
 
