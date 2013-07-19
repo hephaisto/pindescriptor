@@ -17,10 +17,14 @@ Previously you had to do something like this (for a motor connected to pin A1):
 	#define MOTOR1_DDR DDRA
 	#define MOTOR1_PORT PORTA
 	#define MOTOR1_BIT 1
+	#define BUTTON1_DDR DDRA
+	#define BUTTON1_PIN PINA
+	#define BUTTON1_BIT 2
 	#endif
 	
 	// in init routine
 	MOTOR1_DDR|=(1<<MOTOR1_BIT);
+	BUTTON1_DDR&=~(1<<BUTTON1_BIT);
 	
 	// switch on MOTOR1 when BUTTON1 is high
 	if(BUTTON1_PIN& (1<<BUTTON1_BIT))
@@ -33,19 +37,17 @@ Using this library, defining the pins is as easy as writing
 
 	[ATmega32]
 	MOTOR1=A1,out
+	BUTTON1=A2,in
 
 and using
 
 	// init routine
-	MOTOR1_INIT;
+	INIT_ALL_PINS;
 	
 	// switch on motor
 	if(BUTTON1_IS_ON)
 		MOTOR1_ON;
 	
-or even (to initialize all pins at once) just
-
-	INIT_ALL_PINS;
 
 in the init routine.
 
