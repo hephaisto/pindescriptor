@@ -1,12 +1,21 @@
 #!/usr/bin/python
 import ConfigParser
+import sys
 
-filename="pindescription.conf"
+# command line options
+infile="pindescription.conf"
+outfile="pindescription.h"
+if len(sys.argv) > 1:
+	infile=sys.argv[1]
+if len(sys.argv) > 2:
+	outfile=sys.argv[2]
+if len(sys.argv) >3:
+	sys.exit("usage: {0} [config [output]]".format(sys.argv[0]) )
 
 config=ConfigParser.RawConfigParser()
-config.read(filename)
-with open("pindescription.h","w") as f:
-	f.write("// THIS FILE IS AUTOMATICALLY CREATED.\n// MODIFICATIONS WILL BE LOST!\n// EDIT "+filename+" INSTEAD!\n")
+config.read(infile)
+with open(outfile,"w") as f:
+	f.write("// THIS FILE IS AUTOMATICALLY CREATED.\n// MODIFICATIONS WILL BE LOST!\n// EDIT "+infile+" INSTEAD!\n")
 	for section in config.sections():
 		used_pins=[]
 		used_names=[]
@@ -35,7 +44,7 @@ with open("pindescription.h","w") as f:
 			if pindef in used_pins:
 				warnmsg="double assignment of pin "+byte_letter+bit+"!"
 				print("WARNING: "+warnmsg)
-				f.write("#warning "+warnmsg+"\n")
+				f.write("#error "+warnmsg+"\n")
 			used_pins.append(pindef)
 
 			# defines
