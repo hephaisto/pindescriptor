@@ -62,33 +62,35 @@ with open(outfile,"w") as f:
 			f.write("#define {pin_name}_PIN\tPIN{byte_letter}\n".format(**infodict))
 			f.write("#define {pin_name}_DDR\tDDR{byte_letter}\n".format(**infodict))
 			f.write("#define {pin_name}_BIT\t{bit}\n".format(**infodict))
-			{
-				"out":		lambda:
-						f.write("#define {pin_name}_INIT\t{pin_name}_DDR|=(1<<{bit})\n#define {pin_name}_ON\t{pin_name}_PORT|=(1<<{bit})\n#define {pin_name}_OFF\t{pin_name}_PORT&=~(1<<{bit})\n"\
+			try:
+				{
+					"out":		lambda:
+							f.write("#define {pin_name}_INIT\t{pin_name}_DDR|=(1<<{bit})\n#define {pin_name}_ON\t{pin_name}_PORT|=(1<<{bit})\n#define {pin_name}_OFF\t{pin_name}_PORT&=~(1<<{bit})\n"\
+								.format(**infodict)),
+					"in":		lambda:
+							f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT&=~(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}\n"\
+								.format(**infodict)),
+					"pullup":	lambda:
+							f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT|=(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}\n"\
 							.format(**infodict)),
-				"in":		lambda:
-						f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT&=~(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}"\
-							.format(**infodict)),
-				"pullup":	lambda:
-						f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT|=(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}"\
-						.format(**infodict)),
-				"generic":	lambda:
-						f.write("#define {pin_name}_INIT\n"\
-						.format(**infodict))	# just do nothing on init
-			}[mode]()
+					"generic":	lambda:
+							f.write("#define {pin_name}_INIT\n"\
+							.format(**infodict))	# just do nothing on init
+				}[mode]()
+			except:
+				sys.exit("unknown mode "+mode)
 
 		# one big init routine
 		f.write("#define INIT_ALL_PINS")
-		for i in range(len(used_names)):
-			pin=used_names[i]
+		for j in range(len(used_names)):
+			pin=used_names[j]
 			f.write("\\\n\t"+pin+"_INIT")
-			if i!=len(used_names)-1:
+			if j!=len(used_names)-1:
 				f.write(";")
 		f.write("\n")
 
-		# end of controller section
-		if i==len(config.sections())-1:
-			f.write("\n\n// ***** other controllers *****\n")
-			f.write("#else\n")
+	# end of controller section
+	f.write("\n\n// ***** other controllers *****\n")
+	f.write("#else\n")
 	f.write("\t#error no pinout defined for this controller type\n")
 	f.write("#endif\n")
