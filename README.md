@@ -42,8 +42,9 @@ Usage
 -----
 
 copy pindescriptor to your project file or somewhere in your PATH.
-You can run `./install.sh` to copy the executable to `/usr/bin`.
-You may have to run `chmod u+x pindescriptor` to mark it executable.
+
+	chmod a+x pindescriptor
+	mv pindescriptor /usr/bin/
 
 Create a file `pindescription.conf` (see example below) in your project file and run `pindescriptor` there.
 This will create a `pindescription.h` at the same directory which you can `#include` where you need it.
