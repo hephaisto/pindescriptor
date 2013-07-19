@@ -55,9 +55,9 @@ with open(outfile,"w") as f:
 			f.write("#define "+pin_name+"_DDR\tDDR"+byte_letter+"\n")
 			f.write("#define "+pin_name+"_BIT\t"+bit+"\n")
 			{
-				"out":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR|=(1<<"+byte_letter+");\n"),
-				"in":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT&=~(1<<"+bit+");\n"),
-				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT|=(1<<"+bit+");\n"),
+				"out":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR|=(1<<"+bit+");\n"),
+				"in":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+bit+"); "+pin_name+"_PORT&=~(1<<"+bit+");\n"),
+				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+bit+"); "+pin_name+"_PORT|=(1<<"+bit+");\n"),
 				"generic":	lambda: f.write("#define "+pin_name+"_INIT\n")	# just do nothing on init
 			}[mode]()
 
