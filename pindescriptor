@@ -14,15 +14,21 @@ if len(sys.argv) >3:
 
 config=ConfigParser.RawConfigParser()
 config.read(infile)
+
 with open(outfile,"w") as f:
 	f.write("// THIS FILE IS AUTOMATICALLY CREATED.\n// MODIFICATIONS WILL BE LOST!\n// EDIT "+infile+" INSTEAD!\n")
-	for section in config.sections():
+	for i in range(len(config.sections())):
+		section=config.sections()[i]
 		used_pins=[]
 		used_names=[]
 
 		# section headers for each controller type
 		f.write("\n\n// ***** "+section+" *****\n")
-		f.write("#if defined __AVR_"+section+"__\n")
+
+		ifclause="if"
+		if i>0:
+			ifclause="elif"
+		f.write("#"+ifclause+" defined __AVR_"+section+"__\n")
 
 
 		for key,value in config.items(section):
@@ -68,4 +74,8 @@ with open(outfile,"w") as f:
 		f.write("\n")
 
 		# end of controller section
-		f.write("#endif\n")
+		if i==len(config.sections())-1:
+			f.write("\n\n// ***** other controllers *****\n")
+			f.write("#else\n")
+	f.write("\t#error no pinout defined for this controller type\n")
+	f.write("#endif\n")
