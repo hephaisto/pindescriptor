@@ -63,9 +63,12 @@ Example pindescription.conf
 	MOTOR_B:A2,out
 	BUTTON_OK:A3,in
 	BUTTON_CANCEL:A4,pullup
+	IO_PIN1:A5,generic
+	IO_PIN2:A6
 	
 the following modes are allowed:
 
 * `out` sets DDR to 1
 * `in` sets DDR to 0 and PORT to 0 (disable pullups)
 * `pullup` sets DDR to 0 and PORT to 1 (enable pullups)
+* `generic` (or no mode given) does not set any registers, but still defines an empty INIT macro

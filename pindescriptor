@@ -34,7 +34,9 @@ with open(outfile,"w") as f:
 
 			byte_letter=values[0][0].upper()
 			bit=values[0][1]
-			mode=values[1]
+			mode="generic"
+			if len(values)>1:
+				mode=values[1]
 
 			# header for pin
 			f.write("\n// "+pin_name+"\n")
@@ -55,7 +57,8 @@ with open(outfile,"w") as f:
 			{
 				"out":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR|=(1<<"+byte_letter+");\n"),
 				"in":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT&=~(1<<"+bit+");\n"),
-				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT|=(1<<"+bit+");\n")
+				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT|=(1<<"+bit+");\n"),
+				"generic":	lambda: f.write("#define "+pin_name+"_INIT\n")	# just do nothing on init
 			}[mode]()
 
 		# one big init routine
