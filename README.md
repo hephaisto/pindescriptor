@@ -1,7 +1,16 @@
 pindescriptor
 =============
 
-This tool allows to place pin descriptions for ATMEL AVRs outside the code. Previously you had to do something like this (for a motor connected to pin A1):
+This tool allows to place pin descriptions for ATMEL AVRs outside the code.
+
+The code is written in python, so you have to have the interpreter installed.
+
+The code is released using the MIT license.
+
+Motivation
+----------
+
+Previously you had to do something like this (for a motor connected to pin A1):
 
 	// somewhere at top
 	#if defined __AVR_ATmega32__
