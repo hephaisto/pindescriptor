@@ -1,0 +1,59 @@
+#!/usr/bin/python
+import ConfigParser
+
+filename="pindescription.conf"
+
+config=ConfigParser.RawConfigParser()
+config.read(filename)
+with open("pindescription.h","w") as f:
+	f.write("// THIS FILE IS AUTOMATICALLY CREATED.\n// MODIFICATIONS WILL BE LOST!\n// EDIT "+filename+" INSTEAD!\n")
+	for section in config.sections():
+		used_pins=[]
+		used_names=[]
+
+		# section headers for each controller type
+		f.write("\n\n// ***** "+section+" *****\n")
+		f.write("#if defined __AVR_"+section+"__\n")
+
+
+		for key,value in config.items(section):
+
+			# parse line
+			pin_name=key.upper()
+			used_names.append(pin_name)
+			values=value.split(",")
+
+			byte_letter=values[0][0].upper()
+			bit=values[0][1]
+			mode=values[1]
+
+			# header for pin
+			f.write("\n// "+pin_name+"\n")
+
+			# check for double-assignments
+			pindef=(byte_letter,bit)
+			if pindef in used_pins:
+				warnmsg="double assignment of pin "+byte_letter+bit+"!"
+				print("WARNING: "+warnmsg)
+				f.write("#warning "+warnmsg+"\n")
+			used_pins.append(pindef)
+
+			# defines
+			f.write("#define "+pin_name+"_PORT\tPORT"+byte_letter+"\n")
+			f.write("#define "+pin_name+"_PIN\tPIN"+byte_letter+"\n")
+			f.write("#define "+pin_name+"_DDR\tDDR"+byte_letter+"\n")
+			f.write("#define "+pin_name+"_BIT\t"+bit+"\n")
+			{
+				"out":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR|=(1<<"+byte_letter+");\n"),
+				"in":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT&=~(1<<"+bit+");\n"),
+				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+byte_letter+"); "+pin_name+"_PORT|=(1<<"+bit+");\n")
+			}[mode]()
+
+		# one big init routine
+		f.write("#define INIT_ALL_PINS")
+		for pin in used_names:
+			f.write("\\\n\t"+pin+"_INIT")
+		f.write("\n")
+
+		# end of controller section
+		f.write("#endif\n")
