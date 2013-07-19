@@ -44,6 +44,8 @@ with open(outfile,"w") as f:
 			if len(values)>1:
 				mode=values[1]
 
+			infodict={"mode":mode, "pin_name":pin_name, "byte_letter":byte_letter, "bit":bit}
+
 			# header for pin
 			f.write("\n// "+pin_name+"\n")
 
@@ -56,21 +58,32 @@ with open(outfile,"w") as f:
 			used_pins.append(pindef)
 
 			# defines
-			f.write("#define "+pin_name+"_PORT\tPORT"+byte_letter+"\n")
-			f.write("#define "+pin_name+"_PIN\tPIN"+byte_letter+"\n")
-			f.write("#define "+pin_name+"_DDR\tDDR"+byte_letter+"\n")
-			f.write("#define "+pin_name+"_BIT\t"+bit+"\n")
+			f.write("#define {pin_name}_PORT\tPORT{byte_letter}\n".format(**infodict))
+			f.write("#define {pin_name}_PIN\tPIN{byte_letter}\n".format(**infodict))
+			f.write("#define {pin_name}_DDR\tDDR{byte_letter}\n".format(**infodict))
+			f.write("#define {pin_name}_BIT\t{bit}\n".format(**infodict))
 			{
-				"out":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR|=(1<<"+bit+");\n"),
-				"in":		lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+bit+"); "+pin_name+"_PORT&=~(1<<"+bit+");\n"),
-				"pullup":	lambda: f.write("#define "+pin_name+"_INIT\t"+pin_name+"_DDR&=~(1<<"+bit+"); "+pin_name+"_PORT|=(1<<"+bit+");\n"),
-				"generic":	lambda: f.write("#define "+pin_name+"_INIT\n")	# just do nothing on init
+				"out":		lambda:
+						f.write("#define {pin_name}_INIT\t{pin_name}_DDR|=(1<<{bit})\n#define {pin_name}_ON\t{pin_name}_PORT|=(1<<{bit})\n#define {pin_name}_OFF\t{pin_name}_PORT&=~(1<<{bit})\n"\
+							.format(**infodict)),
+				"in":		lambda:
+						f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT&=~(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}"\
+							.format(**infodict)),
+				"pullup":	lambda:
+						f.write("#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}) {pin_name}_PORT|=(1<< {bit})\n#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}"\
+						.format(**infodict)),
+				"generic":	lambda:
+						f.write("#define {pin_name}_INIT\n"\
+						.format(**infodict))	# just do nothing on init
 			}[mode]()
 
 		# one big init routine
 		f.write("#define INIT_ALL_PINS")
-		for pin in used_names:
+		for i in range(len(used_names)):
+			pin=used_names[i]
 			f.write("\\\n\t"+pin+"_INIT")
+			if i!=len(used_names)-1:
+				f.write(";")
 		f.write("\n")
 
 		# end of controller section

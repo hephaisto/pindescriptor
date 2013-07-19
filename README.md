@@ -18,8 +18,13 @@ Previously you had to do something like this (for a motor connected to pin A1):
 	#define MOTOR1_PORT PORTA
 	#define MOTOR1_BIT 1
 	#endif
+	
 	// in init routine
 	MOTOR1_DDR|=(1<<MOTOR1_BIT);
+	
+	// switch on MOTOR1 when BUTTON1 is high
+	if(BUTTON1_PIN& (1<<BUTTON1_BIT))
+		MOTOR1_PORT|=(1<<MOTOR1_BIT);
 
 
 This creates a lot of code which is hard to maintain, especially if you want to write code for more than one controller and they have different pinouts.
@@ -31,11 +36,16 @@ Using this library, defining the pins is as easy as writing
 
 and using
 
-	MOTOR1_INIT
+	// init routine
+	MOTOR1_INIT;
 	
-or even (to initialize all pins at once)
+	// switch on motor
+	if(BUTTON1_IS_ON)
+		MOTOR1_ON;
+	
+or even (to initialize all pins at once) just
 
-	INIT_ALL_PINS
+	INIT_ALL_PINS;
 
 in the init routine.
 
@@ -64,8 +74,10 @@ Alternatively, you can place the config file whereever you want and run `pindesc
 	pindescription.h: pindescription.conf
 		pindescriptor
 
-Example pindescription.conf
----------------------------
+pindescription.conf
+-------------------
+
+Example
 
 	[ATmega32]
 	MOTOR_A:A1,out
@@ -74,6 +86,8 @@ Example pindescription.conf
 	BUTTON_CANCEL:A4,pullup
 	IO_PIN1:A5,generic
 	IO_PIN2:A6
+
+All pin names are converted to uppercase!!
 	
 the following modes are allowed:
 
@@ -81,3 +95,16 @@ the following modes are allowed:
 * `in` sets DDR to 0 and PORT to 0 (disable pullups)
 * `pullup` sets DDR to 0 and PORT to 1 (enable pullups)
 * `generic` (or no mode given) does not set any registers, but still defines an empty INIT macro
+
+The following macros are defined (`X` representing the respective name)
+
+* `X_DDR`: data direction register
+* `X_PORT`: port register (output value and pullup state)
+* `X_PIN`: input register
+* `X_BIT`: bit number in register
+* `X_INIT`: macro to init DDR (and PORT for in/pullup)
+* `X_ON` (output only): set output to HIGH
+* `X_OFF` (output only): set output to LOW
+* `X_IS_ON` (input/pullup only): use in stuff like `if(X_IS_ON)`
+* `X_INPUT_BIT` (input/pullup only): gives numerical value `0` for low input and `1` for high input
+
