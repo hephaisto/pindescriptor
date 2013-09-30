@@ -49,6 +49,9 @@ with open(outfile,"w") as f:
 				sys.exit("invalid pin description: "+value)
 
 			infodict={"mode":mode, "pin_name":pin_name, "byte_letter":byte_letter, "bit":bit}
+			infodict["DDR"]="DDR{byte_letter}".format(**infodict)
+			infodict["PORT"]="PORT{byte_letter}".format(**infodict)
+			infodict["PIN"]="PIN{byte_letter}".format(**infodict)
 
 			# header for pin
 			f.write("\n// "+pin_name+"\n")
@@ -62,38 +65,40 @@ with open(outfile,"w") as f:
 			used_pins.append(pindef)
 
 			# defines
-			f.write("#define {pin_name}_PORT\tPORT{byte_letter}\n".format(**infodict))
-			f.write("#define {pin_name}_PIN\tPIN{byte_letter}\n".format(**infodict))
-			f.write("#define {pin_name}_DDR\tDDR{byte_letter}\n".format(**infodict))
+			f.write("#define {pin_name}_PORT\t{PORT}\n".format(**infodict))
+			f.write("#define {pin_name}_PIN\t{PIN}\n".format(**infodict))
+			f.write("#define {pin_name}_DDR\t{DDR}\n".format(**infodict))
 			f.write("#define {pin_name}_BIT\t{bit}\n".format(**infodict))
+
+
 			try:
 				{
 					"out":		lambda:
 							f.write(
-							"#define {pin_name}_INIT\t{pin_name}_DDR|=(1<<{bit})\n"
-							"#define {pin_name}_ON\t{pin_name}_PORT|=(1<<{bit})\n"
-							"#define {pin_name}_OFF\t{pin_name}_PORT&=~(1<<{bit})\n"
+							"#define {pin_name}_INIT\t{DDR}|=(1<<{bit})\n"
+							"#define {pin_name}_ON\t{PORT}|=(1<<{bit})\n"
+							"#define {pin_name}_OFF\t{PORT}&=~(1<<{bit})\n"
 							.format(**infodict)),
 					"in":		lambda:
 							f.write(
-							"#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}); {pin_name}_PORT&=~(1<< {bit})\n"
-							"#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_INIT\t{DDR}&=~(1<<{bit}); {PORT}&=~(1<< {bit})\n"
+							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
+							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
 							.format(**infodict)),
 					"pullup":	lambda:
 							f.write(
-							"#define {pin_name}_INIT\t{pin_name}_DDR&=~(1<<{bit}); {pin_name}_PORT|=(1<< {bit})\n"
-							"#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_INIT\t{DDR}&=~(1<<{bit}); {PORT}|=(1<< {bit})\n"
+							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
+							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
 							.format(**infodict)),
 					"generic":	lambda:
 							f.write(
 							"#define {pin_name}_INIT\n"
-							"#define {pin_name}_IS_ON\t{pin_name}_PIN&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({pin_name}_PIN&(1<<{bit}))>>{bit}\n"
-							"#define {pin_name}_ON\t{pin_name}_DDR|=(1<<{bit});{pin_name}_PORT|=(1<<{bit})\n"
-							"#define {pin_name}_OFF\t{pin_name}_DDR|=(1<<{bit});{pin_name}_PORT&=~(1<<{bit})\n"
-							"#define {pin_name}_HIGHZ\t{pin_name}_DDR&=~(1<<{bit}); {pin_name}_PORT&=~(1<< {bit})\n"
+							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
+							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_ON\t{DDR}|=(1<<{bit});{PORT}|=(1<<{bit})\n"
+							"#define {pin_name}_OFF\t{DDR}|=(1<<{bit});{PORT}&=~(1<<{bit})\n"
+							"#define {pin_name}_HIGHZ\t{DDR}&=~(1<<{bit}); {PORT}&=~(1<< {bit})\n"
 							.format(**infodict))	# just do nothing on init
 				}[mode]()
 			except:
