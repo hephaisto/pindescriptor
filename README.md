@@ -105,8 +105,8 @@ The following macros are defined (`X` representing the respective name)
 * `X_PIN`: input register
 * `X_BIT`: bit number in register
 * `X_INIT`: macro to init DDR (and PORT for in/pullup)
-* `X_ON` (output only): set output to HIGH
-* `X_OFF` (output only): set output to LOW
+* `X_ON` (output/generic only): set output to HIGH
+* `X_OFF` (output/generic only): set output to LOW
 * `X_IS_ON` (input/pullup only): use in stuff like `if(X_IS_ON)`
 * `X_INPUT_BIT` (input/pullup only): gives numerical value `0` for low input and `1` for high input
-
+* `X_HIGHZ` (generic only): switches pin to high-impedance input (equivalent to mode "in")
