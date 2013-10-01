@@ -110,3 +110,5 @@ The following macros are defined (`X` representing the respective name)
 * `X_IS_ON` (input/pullup only): use in stuff like `if(X_IS_ON)`
 * `X_INPUT_BIT` (input/pullup only): gives numerical value `0` for low input and `1` for high input
 * `X_HIGHZ` (generic only): switches pin to high-impedance input (equivalent to mode "in")
+
+For a list of device name macros automatically inserted by avr-gcc look at http://www.nongnu.org/avr-libc/user-manual/using_tools.html and strip the leading `__AVR_` and the trailing `__`.
