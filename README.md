@@ -1,14 +1,15 @@
-pindescriptor
-=============
+# pindescriptor
 
 This tool allows to place pin descriptions for ATMEL AVRs outside the code.
+The macro options allow easy generation of register settings with speaking names.
 
 The code is written in python, so you have to have the interpreter installed.
 
 The code is released using the MIT license.
 
-Motivation
-----------
+## Motivation
+
+### pindescription
 
 Previously you had to do something like this (for a motor connected to pin A1):
 
@@ -51,16 +52,28 @@ and using
 
 in the init routine.
 
-Features
---------
-
+Additional features include:
 * produces `#error` statements when one pin is assigned to multiple names
 * produces initialisation routine which sets DDR (and PORT for inputs)
 * different pinouts for different controllers
 
+### macros
+Instead of having unreadable code like
 
-Usage
------
+	TCCR0B |=  (1<<CS02);
+	TCCR0B |=  (1<<CS01);
+	TCCR0B &= ~(1<<CS00);
+
+in setup routines, the macros generated from the supplied config file have names like
+
+	timer0_clockselect_on_falling_T0();
+
+which greatly increases readability. Compared to comments, they remove redundancy of information and don't permit asynchronities between code and comments.
+
+
+## Usage
+
+### pindescription
 
 copy pindescriptor to your project file or somewhere in your PATH.
 
@@ -71,12 +84,12 @@ Create a file `pindescription.conf` (see example below) in your project file and
 This will create a `pindescription.h` at the same directory which you can `#include` where you need it.
 Alternatively, you can place the config file whereever you want and run `pindescriptor CONFIG OUTPUT` (this way you can also use a different name for the header file).
 
-### using makefiles
+#### using makefiles
 
 	pindescription.h: pindescription.conf
 		pindescriptor
 
-pindescription.conf
+#### pindescription.conf
 -------------------
 
 Example
@@ -112,3 +125,31 @@ The following macros are defined (`X` representing the respective name)
 * `X_HIGHZ` (generic only): switches pin to high-impedance input (equivalent to mode "in")
 
 For a list of device name macros automatically inserted by avr-gcc look at http://www.nongnu.org/avr-libc/user-manual/using_tools.html and strip the leading `__AVR_` and the trailing `__`.
+
+### macros
+Generate macros for supplied controllers (currently only ATmega328, as used on most Arduino boards) by running
+
+	generate_macros.py ATmega328
+
+This will generate both an `ATmega328.c` file with all defined functions, and an `ATmega328.h` with the necessary prototypes ready for inclusion.
+The header file also includes defines in the form `BITNAME_reg`, which point to the register of the bit with the name `BITNAME`.
+This allows to set the corresponding bit without looking up the register, e.g. `COM0A1_reg |= 1<<COM0A1;` will resolve to `TCCR0A |= 1<<COM0A1;` on the ATmega328. In fact, the previous line can even be written as `SET_BIT_1(COM0A1);`.
+
+Additionally, all interrupt vectors have enable/disable macros of the form `int_SOURCE_enable/disable`.
+
+The macros are best used with automatic code completion of your IDE.
+
+
+#### config file
+The config file is in INI format.
+If you want to add your own macros, add a new INI header `[PREFIX]`.
+Under this section, add a field named `bits` which are a space separated list of bit-position names like in the headers of a table in the datasheet.
+For each combination of 0/1, add an entry of the form `001=NAME`. This will generate a function with the name `PREFIX_NAME` which sets the bits defined above to `0`, `0` and `1` in the order as defined in the `bits` field.
+For reserved combinations, use the special name `-`, which will skip this combination.
+
+If you need additional registers, define them in the `registers` section.
+Each register name should have a space-separated list of 8 bit-field-names (use `-` again if the bit is reserved).
+
+For interrupts, just assign the name of the corresponding enable-bit to the name you want to use as a function name.
+
+If you add new functionality, please remember to contribute your changes (e.g. via pull request).
