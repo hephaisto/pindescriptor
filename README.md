@@ -90,7 +90,6 @@ Alternatively, you can place the config file whereever you want and run `pindesc
 		pindescriptor
 
 #### pindescription.conf
--------------------
 
 Example
 
@@ -143,7 +142,7 @@ The macros are best used with automatic code completion of your IDE.
 #### config file
 The config file is in INI format.
 If you want to add your own macros, add a new INI header `[PREFIX]`.
-Under this section, add a field named `bits` which are a space separated list of bit-position names like in the headers of a table in the datasheet.
+Under this section, add a field named `bits`, which is a space separated list of bit-position names like in the headers of a table in the datasheet.
 For each combination of 0/1, add an entry of the form `001=NAME`. This will generate a function with the name `PREFIX_NAME` which sets the bits defined above to `0`, `0` and `1` in the order as defined in the `bits` field.
 For reserved combinations, use the special name `-`, which will skip this combination.
 
