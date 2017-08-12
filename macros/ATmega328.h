@@ -2,76 +2,101 @@
 #define SET_BIT_0(name) name ## _reg &= ~(1<<name)
 #define SET_BIT_1(name) name ## _reg |= (1<<name)
 // registers for all used bit names
+#define DORD0_reg SPCR0
+#define OCR2AUB_reg ASSR
+#define SPE0_reg SPCR0
+#define COM2A0_reg TCCR2A
+#define COM2A1_reg TCCR2A
+#define ACME_reg ADCSRB
+#define TOIE2_reg TIMSK2
+#define TOIE0_reg TIMSK0
+#define TOIE1_reg TIMSK1
+#define TCN2UB_reg ASSR
+#define OCIE1B_reg TIMSK1
+#define ADATE_reg ADCSRA
+#define SPR00_reg SPCR0
+#define SPR01_reg SPCR0
+#define TOV0_reg TIFR0
+#define TCR2AUB_reg ASSR
+#define OCIE0B_reg TIMSK0
+#define OCIE0A_reg TIMSK0
+#define OCIE2A_reg TIMSK2
+#define OCIE2B_reg TIMSK2
+#define SPIE0_reg SPCR0
+#define MUX2_reg ADMUX
+#define MUX3_reg ADMUX
+#define MUX0_reg ADMUX
+#define MUX1_reg ADMUX
+#define FOC0A_reg TCCR0B
+#define FOC0B_reg TCCR0B
+#define WCOL0_reg SPSR0
+#define ADTS1_reg ADCSRB
+#define ADTS0_reg ADCSRB
+#define ADTS2_reg ADCSRB
+#define ADLAR_reg ADMUX
+#define COM2B1_reg TCCR2A
+#define COM2B0_reg TCCR2A
+#define ADC4D_reg DIDR0
+#define ICIE1_reg TIMSK1
+#define MSTR0_reg SPCR0
+#define COM0B1_reg TCCR0A
+#define COM0B0_reg TCCR0A
+#define OCF0B_reg TIFR0
 #define CS20_reg TCCR2B
 #define CS21_reg TCCR2B
 #define CS22_reg TCCR2B
-#define TOIE1_reg TIMSK1
 #define WGM11_reg TCCR1A
 #define WGM10_reg TCCR1A
 #define WGM13_reg TCCR1B
 #define WGM12_reg TCCR1B
-#define DORD0_reg SPCR0
-#define CS02_reg TCCR0B
-#define OCR2AUB_reg ASSR
-#define CS00_reg TCCR0B
-#define CS01_reg TCCR0B
-#define COM2A0_reg TCCR2A
-#define COM2A1_reg TCCR2A
-#define CPHA0_reg SPCR0
-#define TCR2AUB_reg ASSR
-#define OCIE2A_reg TIMSK2
-#define FOC0A_reg TCCR0B
-#define FOC0B_reg TCCR0B
+#define ADC3D_reg DIDR0
+#define ADSC_reg ADCSRA
+#define ADPS1_reg ADCSRA
+#define ADPS0_reg ADCSRA
+#define ADPS2_reg ADCSRA
 #define COM0A0_reg TCCR0A
 #define COM0A1_reg TCCR0A
-#define TOIE2_reg TIMSK2
-#define TOIE0_reg TIMSK0
 #define OC0A_reg TIFR0
 #define FOC2B_reg TCCR2B
 #define FOC2A_reg TCCR2B
-#define SPI2X0_reg SPSR0
-#define ICNC1_reg TCCR1B
-#define COM1A1_reg TCCR1A
-#define COM1A0_reg TCCR1A
-#define OCIE1B_reg TIMSK1
-#define CPOL0_reg SPCR0
 #define AS2_reg ASSR
-#define WCOL0_reg SPSR0
 #define WGM02_reg TCCR0B
-#define SPIF0_reg SPSR0
 #define WGM00_reg TCCR0A
 #define WGM01_reg TCCR0A
+#define OCIE1A_reg TIMSK1
+#define EXCLK_reg ASSR
+#define ADIE_reg ADCSRA
+#define ADIF_reg ADCSRA
+#define REFS1_reg ADMUX
+#define REFS0_reg ADMUX
+#define FOC1B_reg TCCR1C
+#define FOC1A_reg TCCR1C
+#define CS02_reg TCCR0B
+#define CS00_reg TCCR0B
+#define CS01_reg TCCR0B
+#define ADC1D_reg DIDR0
+#define SPI2X0_reg SPSR0
+#define CPHA0_reg SPCR0
+#define COM1A1_reg TCCR1A
+#define COM1A0_reg TCCR1A
+#define ADEN_reg ADCSRA
+#define SPIF0_reg SPSR0
+#define ICNC1_reg TCCR1B
 #define CS11_reg TCCR1B
 #define CS10_reg TCCR1B
 #define CS12_reg TCCR1B
 #define WGM20_reg TCCR2A
 #define WGM21_reg TCCR2A
 #define WGM22_reg TCCR2B
-#define SPR00_reg SPCR0
-#define COM0B1_reg TCCR0A
-#define FOC1A_reg TCCR1C
-#define EXCLK_reg ASSR
-#define SPE0_reg SPCR0
-#define TCN2UB_reg ASSR
-#define TOV0_reg TIFR0
-#define COM2B1_reg TCCR2A
-#define COM2B0_reg TCCR2A
-#define FOC1B_reg TCCR1C
-#define SPIE0_reg SPCR0
-#define OCIE0A_reg TIMSK0
+#define ADC0D_reg DIDR0
+#define ADC5D_reg DIDR0
 #define COM1B0_reg TCCR1A
 #define COM1B1_reg TCCR1A
-#define ICIE1_reg TIMSK1
+#define ADC2D_reg DIDR0
 #define ICES1_reg TCCR1B
-#define MSTR0_reg SPCR0
-#define OCIE1A_reg TIMSK1
+#define CPOL0_reg SPCR0
 #define OCR2BUB_reg ASSR
-#define OCIE0B_reg TIMSK0
-#define COM0B0_reg TCCR0A
-#define OCF0B_reg TIFR0
 #define TCR2BUB_reg ASSR
-#define OCIE2B_reg TIMSK2
-#define SPR01_reg SPCR0
 
 // timer0_mode
 
@@ -537,6 +562,273 @@ inline void timer2_clockselect_t2clk_1024()
 	TCCR2B |=  (1<<CS20);
 }
 
+// adc_reference
+
+inline void adc_reference_aref()
+{
+	ADMUX &= ~(1<<REFS1);
+	ADMUX &= ~(1<<REFS0);
+}
+
+inline void adc_reference_avcc()
+{
+	ADMUX &= ~(1<<REFS1);
+	ADMUX |=  (1<<REFS0);
+}
+
+inline void adc_reference_internal()
+{
+	ADMUX |=  (1<<REFS1);
+	ADMUX |=  (1<<REFS0);
+}
+
+// adc_adjust
+
+inline void adc_adjust_right()
+{
+	ADMUX &= ~(1<<ADLAR);
+}
+
+inline void adc_adjust_left()
+{
+	ADMUX |=  (1<<ADLAR);
+}
+
+// adc_multiplexer
+
+inline void adc_multiplexer_adc0()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX &= ~(1<<MUX2);
+	ADMUX &= ~(1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_adc1()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX &= ~(1<<MUX2);
+	ADMUX &= ~(1<<MUX1);
+	ADMUX |=  (1<<MUX0);
+}
+
+inline void adc_multiplexer_adc2()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX &= ~(1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_adc3()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX &= ~(1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX |=  (1<<MUX0);
+}
+
+inline void adc_multiplexer_adc4()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX &= ~(1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_adc5()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX &= ~(1<<MUX1);
+	ADMUX |=  (1<<MUX0);
+}
+
+inline void adc_multiplexer_adc6()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_adc7()
+{
+	ADMUX &= ~(1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX |=  (1<<MUX0);
+}
+
+inline void adc_multiplexer_temperature()
+{
+	ADMUX |=  (1<<MUX3);
+	ADMUX &= ~(1<<MUX2);
+	ADMUX &= ~(1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_1V1()
+{
+	ADMUX |=  (1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX &= ~(1<<MUX0);
+}
+
+inline void adc_multiplexer_0V()
+{
+	ADMUX |=  (1<<MUX3);
+	ADMUX |=  (1<<MUX2);
+	ADMUX |=  (1<<MUX1);
+	ADMUX |=  (1<<MUX0);
+}
+
+// adc_enable
+
+inline void adc_enable_on()
+{
+	ADCSRA &= ~(1<<ADEN);
+}
+
+inline void adc_enable_off()
+{
+	ADCSRA |=  (1<<ADEN);
+}
+
+// adc
+
+inline void adc_stop()
+{
+	ADCSRA &= ~(1<<ADSC);
+}
+
+inline void adc_start()
+{
+	ADCSRA |=  (1<<ADSC);
+}
+
+// adc_auto_trigger
+
+inline void adc_auto_trigger_disable()
+{
+	ADCSRA &= ~(1<<ADATE);
+}
+
+inline void adc_auto_trigger_enable()
+{
+	ADCSRA |=  (1<<ADATE);
+}
+
+// adc_prescaler
+
+inline void adc_prescaler_2()
+{
+	ADCSRA &= ~(1<<ADPS2);
+	ADCSRA &= ~(1<<ADPS1);
+	ADCSRA |=  (1<<ADPS0);
+}
+
+inline void adc_prescaler_4()
+{
+	ADCSRA &= ~(1<<ADPS2);
+	ADCSRA |=  (1<<ADPS1);
+	ADCSRA &= ~(1<<ADPS0);
+}
+
+inline void adc_prescaler_8()
+{
+	ADCSRA &= ~(1<<ADPS2);
+	ADCSRA |=  (1<<ADPS1);
+	ADCSRA |=  (1<<ADPS0);
+}
+
+inline void adc_prescaler_16()
+{
+	ADCSRA |=  (1<<ADPS2);
+	ADCSRA &= ~(1<<ADPS1);
+	ADCSRA &= ~(1<<ADPS0);
+}
+
+inline void adc_prescaler_32()
+{
+	ADCSRA |=  (1<<ADPS2);
+	ADCSRA &= ~(1<<ADPS1);
+	ADCSRA |=  (1<<ADPS0);
+}
+
+inline void adc_prescaler_64()
+{
+	ADCSRA |=  (1<<ADPS2);
+	ADCSRA |=  (1<<ADPS1);
+	ADCSRA &= ~(1<<ADPS0);
+}
+
+inline void adc_prescaler_128()
+{
+	ADCSRA |=  (1<<ADPS2);
+	ADCSRA |=  (1<<ADPS1);
+	ADCSRA |=  (1<<ADPS0);
+}
+
+// adc_trigger_source
+
+inline void adc_trigger_source_free_running()
+{
+	ADCSRB &= ~(1<<ADTS2);
+	ADCSRB &= ~(1<<ADTS1);
+	ADCSRB &= ~(1<<ADTS0);
+}
+
+inline void adc_trigger_source_analog_comparator()
+{
+	ADCSRB &= ~(1<<ADTS2);
+	ADCSRB &= ~(1<<ADTS1);
+	ADCSRB |=  (1<<ADTS0);
+}
+
+inline void adc_trigger_source_external_int_0()
+{
+	ADCSRB &= ~(1<<ADTS2);
+	ADCSRB |=  (1<<ADTS1);
+	ADCSRB &= ~(1<<ADTS0);
+}
+
+inline void adc_trigger_source_t0_compA()
+{
+	ADCSRB &= ~(1<<ADTS2);
+	ADCSRB |=  (1<<ADTS1);
+	ADCSRB |=  (1<<ADTS0);
+}
+
+inline void adc_trigger_source_t0_ovf()
+{
+	ADCSRB |=  (1<<ADTS2);
+	ADCSRB &= ~(1<<ADTS1);
+	ADCSRB &= ~(1<<ADTS0);
+}
+
+inline void adc_trigger_source_t1_compB()
+{
+	ADCSRB |=  (1<<ADTS2);
+	ADCSRB &= ~(1<<ADTS1);
+	ADCSRB |=  (1<<ADTS0);
+}
+
+inline void adc_trigger_source_t1_ovf()
+{
+	ADCSRB |=  (1<<ADTS2);
+	ADCSRB |=  (1<<ADTS1);
+	ADCSRB &= ~(1<<ADTS0);
+}
+
+inline void adc_trigger_source_t1_capture()
+{
+	ADCSRB |=  (1<<ADTS2);
+	ADCSRB |=  (1<<ADTS1);
+	ADCSRB |=  (1<<ADTS0);
+}
+
 // interrupts
 
 
@@ -608,4 +900,14 @@ inline void int_timer1_overflow_enable()
 inline void int_timer1_overflow_disable()
 {
 	TIMSK1 &= ~(1<<TOIE1);
+}
+
+inline void int_adc_enable()
+{
+	ADCSRA |=  (1<<ADIE);
+}
+
+inline void int_adc_disable()
+{
+	ADCSRA &= ~(1<<ADIE);
 }
