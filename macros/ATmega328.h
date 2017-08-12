@@ -49,14 +49,20 @@
 #define WGM10_reg TCCR1A
 #define WGM13_reg TCCR1B
 #define WGM12_reg TCCR1B
+#define ACI_reg ACSR
+#define ACO_reg ACSR
+#define ACIS0_reg ACSR
 #define ADC3D_reg DIDR0
 #define ADSC_reg ADCSRA
+#define ACIE_reg ACSR
+#define ACIC_reg ACSR
 #define ADPS1_reg ADCSRA
 #define ADPS0_reg ADCSRA
 #define ADPS2_reg ADCSRA
 #define COM0A0_reg TCCR0A
 #define COM0A1_reg TCCR0A
 #define OC0A_reg TIFR0
+#define ACIS1_reg ACSR
 #define FOC2B_reg TCCR2B
 #define FOC2A_reg TCCR2B
 #define AS2_reg ASSR
@@ -71,9 +77,11 @@
 #define REFS0_reg ADMUX
 #define FOC1B_reg TCCR1C
 #define FOC1A_reg TCCR1C
+#define ACBG_reg ACSR
 #define CS02_reg TCCR0B
 #define CS00_reg TCCR0B
 #define CS01_reg TCCR0B
+#define ACD_reg ACSR
 #define ADC1D_reg DIDR0
 #define SPI2X0_reg SPSR0
 #define CPHA0_reg SPCR0
@@ -562,6 +570,50 @@ inline void timer2_clockselect_t2clk_1024()
 	TCCR2B |=  (1<<CS20);
 }
 
+// ac_positive_bandgap
+
+inline void ac_positive_bandgap_disable()
+{
+	ACSR &= ~(1<<ACBG);
+}
+
+inline void ac_positive_bandgap_enable()
+{
+	ACSR |=  (1<<ACBG);
+}
+
+// ac_timer1_capture
+
+inline void ac_timer1_capture_disable()
+{
+	ACSR &= ~(1<<ACIC);
+}
+
+inline void ac_timer1_capture_enable()
+{
+	ACSR |=  (1<<ACIC);
+}
+
+// ac_interrupt_mode
+
+inline void ac_interrupt_mode_toggle()
+{
+	ACSR &= ~(1<<ACIS1);
+	ACSR &= ~(1<<ACIS0);
+}
+
+inline void ac_interrupt_mode_falling()
+{
+	ACSR |=  (1<<ACIS1);
+	ACSR &= ~(1<<ACIS0);
+}
+
+inline void ac_interrupt_mode_rising()
+{
+	ACSR |=  (1<<ACIS1);
+	ACSR |=  (1<<ACIS0);
+}
+
 // adc_reference
 
 inline void adc_reference_aref()
@@ -900,6 +952,16 @@ inline void int_timer1_overflow_enable()
 inline void int_timer1_overflow_disable()
 {
 	TIMSK1 &= ~(1<<TOIE1);
+}
+
+inline void int_ac_enable()
+{
+	ACSR |=  (1<<ACIE);
+}
+
+inline void int_ac_disable()
+{
+	ACSR &= ~(1<<ACIE);
 }
 
 inline void int_adc_enable()
