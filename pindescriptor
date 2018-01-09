@@ -82,20 +82,20 @@ with open(outfile,"w") as f:
 					"in":		lambda:
 							f.write(
 							"#define {pin_name}_INIT\t{DDR}&=~(1<<{bit}); {PORT}&=~(1<< {bit})\n"
-							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_IS_ON\t({PIN}&(1<<{bit}))\n"
+							"#define {pin_name}_INPUT_BIT\t(({PIN}&(1<<{bit}))>>{bit})\n"
 							.format(**infodict)),
 					"pullup":	lambda:
 							f.write(
 							"#define {pin_name}_INIT\t{DDR}&=~(1<<{bit}); {PORT}|=(1<< {bit})\n"
-							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_IS_ON\t({PIN}&(1<<{bit}))\n"
+							"#define {pin_name}_INPUT_BIT\t(({PIN}&(1<<{bit}))>>{bit})\n"
 							.format(**infodict)),
 					"generic":	lambda:
 							f.write(
 							"#define {pin_name}_INIT\n"
-							"#define {pin_name}_IS_ON\t{PIN}&(1<<{bit})\n"
-							"#define {pin_name}_INPUT_BIT\t({PIN}&(1<<{bit}))>>{bit}\n"
+							"#define {pin_name}_IS_ON\t({PIN}&(1<<{bit}))\n"
+							"#define {pin_name}_INPUT_BIT\t(({PIN}&(1<<{bit}))>>{bit})\n"
 							"#define {pin_name}_ON\t{DDR}|=(1<<{bit});{PORT}|=(1<<{bit})\n"
 							"#define {pin_name}_OFF\t{DDR}|=(1<<{bit});{PORT}&=~(1<<{bit})\n"
 							"#define {pin_name}_HIGHZ\t{DDR}&=~(1<<{bit}); {PORT}&=~(1<< {bit})\n"
